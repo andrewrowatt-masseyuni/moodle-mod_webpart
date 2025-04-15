@@ -191,7 +191,7 @@ function simplelabel_reset_userdata($data) {
  */
 function simplelabel_supports($feature) {
     switch($feature) {
-        case FEATURE_IDNUMBER:                return true;
+        case FEATURE_IDNUMBER:                return false;
         case FEATURE_GROUPS:                  return false;
         case FEATURE_GROUPINGS:               return false;
         case FEATURE_MOD_INTRO:               return false;

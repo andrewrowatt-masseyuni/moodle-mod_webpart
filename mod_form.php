@@ -19,7 +19,7 @@
  * Add simplelabel form
  *
  * @package mod_simplelabel
- * @copyright  2006 Jamie Pratt
+ * @copyright  2006 Jamie Pratt, 2025 Andrew Rowatt
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -50,78 +50,118 @@ class mod_simplelabel_mod_form extends moodleform_mod {
         $mform->addElement('hidden', 'showdescription', 1);
         $mform->setType('showdescription', PARAM_INT);
 
-        $options = [
+        $contentypeoptions = [
             'heading' => 'Heading',
             'divider' => 'Divider',
             'spacer' => 'Space'
         ];
-        $select = $mform->addElement('select', 'contenttype', get_string('contenttype','mod_simplelabel'), $options);
-        // This will select the colour blue.
+        $select = $mform->addElement('select', 'contenttype', get_string('contenttype','mod_simplelabel'), $contentypeoptions);
         $select->setSelected('heading');
 
+        $spacingoptions = [
+            '0' => 'No spacing',
+            '1' => 'Small spacing (0.5em)',
+            '2' => 'Medium spacing (1em)',
+            '3' => 'Large spacing (1.5em)',
+            '4' => 'Very large spacing (2em)',
+            '6' => 'Extra large spacing (3em)'
+        ];
+        $select = $mform->addElement('select', 'spacingbefore', get_string('spacingbefore','mod_simplelabel'), $spacingoptions);
+        $select->setSelected('2');
+        $mform->hideIf('spacingbefore', 'contenttype', 'in', ['spacer']);
 
         $mform->addElement('text', 'heading', 'Heading', ['size' => 32]);
         $mform->setDefault('heading', '');
         $mform->setType('heading', PARAM_TEXT);
         $mform->hideIf('heading', 'contenttype', 'in', ['divider','spacer']);
 
+        $headingleveloptions = [
+            'h3' => 'H3',
+            'h4' => 'H4',
+            'h5' => 'H5',
+            'h6' => 'H6'
+        ];
+        $select = $mform->addElement('select', 'headinglevel', get_string('headinglevel','mod_simplelabel'), $headingleveloptions);
+        $select->setSelected('h3');
+        $mform->hideIf('headinglevel', 'contenttype', 'in', ['divider','spacer']);
+
+        $dividerstyleoptions = [
+            'theme1' => 'Theme 1',
+            'theme2' => 'Theme 2',
+            'theme3' => 'Theme 3'
+        ];
+        $select = $mform->addElement('select', 'dividerstyle', get_string('dividerstyle','mod_simplelabel'), $dividerstyleoptions);
+        $select->setSelected('h3');
+        $mform->hideIf('dividerstyle', 'contenttype', 'in', ['heading','spacer']);
+
+        $select = $mform->addElement('select', 'spacingafter', get_string('spacingafter','mod_simplelabel'), $spacingoptions);
+        $select->setSelected('2');
+        $mform->hideIf('spacingafter', 'contenttype', 'in', ['spacer']);
+
         $this->standard_coursemodule_elements();
 
-//-------------------------------------------------------------------------------
-// buttons
         $this->add_action_buttons(true, false, null);
-
     }
 
-    public function data_postprocessing($data) {
+    /**
+     * Takes the custom UI data and processes it into the standard HTML intro
+     *
+     * @param object $data Data submitted by the form.
+     */
+
+    public function data_postprocessing($data): void {
         $content = '';
-        $spacing = '';
+        $spacing = "mt-$data->spacingbefore mb-$data->spacingafter";
 
         switch ($data->contenttype) {
             case 'heading':
-                $content = '<h3>' . $data->heading . '</h3>';
+                $content = "<$data->headinglevel class=\"mb-0\" style=\"overflow: hidden;\">$data->heading</$data->headinglevel>";
                 break;
             case 'divider':
-                $content = '<hr />';
+                $content = "<hr class=\"sl-$data->dividerstyle mt-0 mb-0\"/>";
                 break;
             case 'spacer':
                 $spacing = 'mb-6';
                 break;
         }
-        $data->intro = "<div class=\"$spacing\">$content</h3></div>";
+
+        $data->intro = "<div class=\"$spacing\">$content</div>";
     }
 
-    function data_preprocessing(&$default_values){
+    /**
+     * Parses the intro field into values for the UI
+     *
+     * @param array $default_values Default values for the form.
+     */
+
+     public function data_preprocessing(&$default_values): void {
         if(isset($default_values['intro'])) {
-            switch($default_values['intro']) {
-                case '<h3>This is a simple label</h3>':
-                    $default_values['contenttype'] = 'heading';
-                    break;
-                case '<div class=""><hr /></h3></div>':
+            $matches = [];
+            /* Get spacing infomation */
+            $result = preg_match('/<div class="mt-(\d) mb-(\d)">/', $default_values['intro'], $matches);
+            if($result) {
+                $default_values['spacingbefore'] = $matches[1];
+                $default_values['spacingafter'] = $matches[2];
+            } else {
+                $default_values['spacingbefore'] = 2;
+                $default_values['spacingafter'] = 2;
+            }
+
+            $matches = [];
+            $result = preg_match('/<(h\d).*?>(.*?)<\/h\d>/', $default_values['intro'], $matches);
+            if($result === 1) {
+                $default_values['heading'] = $matches[2];
+                $default_values['headinglevel'] = $matches[1];
+                $default_values['contenttype'] = 'heading';
+            } else {
+                $result = preg_match('/<hr class="sl-(.*?) mt-0 mb-0"\/>/', $default_values['intro'], $matches);
+                if($result === 1) {
                     $default_values['contenttype'] = 'divider';
-                    break;
-                case '<div class="mb-6"></div>':
+                    $default_values['dividerstyle'] = $matches[1];
+                } else {
                     $default_values['contenttype'] = 'spacer';
-                    break;
+                }
             }
         }
-
-        $default_values['heading'] = $default_values['intro'];
-    }
-
-    public function xget_data() {
-        $data = parent::get_data();
-        $content = '<h3>Heading</h3';
-
-        if ($data) {
-            if($data->phone) {
-                $content = '<h3 style="color:red;">' . $data->phone . ' (H2) </h3>';
-            }
-
-            $data->intro = '<div>'. $content .'</div>';
-
-            $this->data_postprocessing($data);
-        }
-        return $data;
     }
 }
