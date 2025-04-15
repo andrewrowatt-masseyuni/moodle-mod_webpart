@@ -110,22 +110,8 @@ class mod_webpart_mod_form extends moodleform_mod {
      */
 
     public function data_postprocessing($data): void {
-        $content = '';
-        $spacing = "mt-$data->spacingbefore mb-$data->spacingafter";
-
-        switch ($data->contenttype) {
-            case 'heading':
-                $content = "<$data->headinglevel class=\"mb-0\" style=\"overflow: hidden;\">$data->heading</$data->headinglevel>";
-                break;
-            case 'divider':
-                $content = "<hr class=\"sl-$data->dividerstyle mt-0 mb-0\"/>";
-                break;
-            case 'spacer':
-                $spacing = 'mb-6';
-                break;
-        }
-
-        $data->intro = "<div class=\"$spacing\">$content</div>";
+        $html = \mod_webpart\webpart::encode_html($data);
+        $data->intro = $html;
     }
 
     /**
@@ -135,33 +121,6 @@ class mod_webpart_mod_form extends moodleform_mod {
      */
 
      public function data_preprocessing(&$default_values): void {
-        if(isset($default_values['intro'])) {
-            $matches = [];
-            /* Get spacing infomation */
-            $result = preg_match('/<div class="mt-(\d) mb-(\d)">/', $default_values['intro'], $matches);
-            if($result) {
-                $default_values['spacingbefore'] = $matches[1];
-                $default_values['spacingafter'] = $matches[2];
-            } else {
-                $default_values['spacingbefore'] = 2;
-                $default_values['spacingafter'] = 2;
-            }
-
-            $matches = [];
-            $result = preg_match('/<(h\d).*?>(.*?)<\/h\d>/', $default_values['intro'], $matches);
-            if($result === 1) {
-                $default_values['heading'] = $matches[2];
-                $default_values['headinglevel'] = $matches[1];
-                $default_values['contenttype'] = 'heading';
-            } else {
-                $result = preg_match('/<hr class="sl-(.*?) mt-0 mb-0"\/>/', $default_values['intro'], $matches);
-                if($result === 1) {
-                    $default_values['contenttype'] = 'divider';
-                    $default_values['dividerstyle'] = $matches[1];
-                } else {
-                    $default_values['contenttype'] = 'spacer';
-                }
-            }
-        }
+        $default_values = \mod_webpart\webpart::decode_html($default_values);
     }
 }
