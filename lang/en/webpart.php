@@ -44,6 +44,7 @@ $string['indicator:socialbreadth_help'] = 'This indicator is based on the social
 $string['indicator:socialbreadthdef'] = 'Web part social';
 $string['indicator:socialbreadthdef_help'] = 'The participant has reached this percentage of the social engagement offered by the Web part resources during this analysis interval (Levels = No participation, Participant alone)';
 $string['indicator:socialbreadthdef_link'] = 'Learning_analytics_indicators#Social_breadth';
+$string['spacerspacing'] = 'Spacing';
 $string['webpart:addinstance'] = 'Add a new Web part';
 $string['webpart:view'] = 'View Web part';
 $string['webparttext'] = 'Text';

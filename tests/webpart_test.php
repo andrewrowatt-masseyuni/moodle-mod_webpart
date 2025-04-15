@@ -80,10 +80,10 @@ final class webpart_test extends \advanced_testcase {
                 'contenttype' => 'spacer',
                 'heading' => '',
                 'headinglevel' => '',
-                'spacingbefore' => 2,
-                'spacingafter' => 2,
+                'spacingbefore' => 0,
+                'spacingafter' => 4,
                 'dividerstyle' => '',
-                'expected_html' => '<div class="mt-0 mb-6"></div>',
+                'expected_html' => '<div class="mt-0 mb-'. webpart::DEFAULT_SPACER_SPACING . '"></div>',
             ]
         ];
     }
@@ -104,12 +104,17 @@ final class webpart_test extends \advanced_testcase {
         $expected_spacingafter,
         $expected_dividerstyle): void {
     
-    $data['intro'] = $html;
+        $data['intro'] = $html;
 
-    $result = webpart::decode_html($data);
-    $this->assertEquals($result['contenttype'], $expected_contenttype);
-    $this->assertEquals($result['heading'], $expected_heading);
-}
+        $result = webpart::decode_html($data);
+        $this->assertEquals($result['contenttype'], $expected_contenttype);
+        $this->assertEquals($result['heading'], $expected_heading);
+        $this->assertEquals($result['headinglevel'], $expected_headinglevel);
+        $this->assertEquals($result['spacingbefore'], $expected_spacingbefore);
+        $this->assertEquals($result['spacingafter'], $expected_spacingafter);
+        $this->assertEquals($result['dividerstyle'], $expected_dividerstyle);
+    }
+ 
 
 public function mod_webpart_decode_html_provider(): array {
     return [
@@ -125,20 +130,20 @@ public function mod_webpart_decode_html_provider(): array {
         'Divider' => [
             'html' => '<div class="mt-1 mb-1"><hr class="sl-theme1 mt-0 mb-0"/></div>',
             'expected_contenttype' => 'divider',
-            'expected_heading' => '',
-            'expected_headinglevel' => '',
+            'expected_heading' => webpart::DEFAULT_HEADING,
+            'expected_headinglevel' => webpart::DEFAULT_HEADING_LEVEL,
             'expected_spacingbefore' => 1,
             'expected_spacingafter' => 1,
             'expected_dividerstyle' => 'theme1',
         ],
         'Spacer' => [
-            'html' => '<div class="mt-0 mb-6"></div>',
+            'html' => '<div class="mt-0 mb-'. webpart::DEFAULT_SPACER_SPACING . '"></div>',
             'expected_contenttype' => 'spacer',
-            'expected_heading' => '',
-            'expected_headinglevel' => '',
-            'expected_spacingbefore' => 2,
-            'expected_spacingafter' => 2,
-            'expected_dividerstyle' => '',
+            'expected_heading' => webpart::DEFAULT_HEADING,
+            'expected_headinglevel' => webpart::DEFAULT_HEADING_LEVEL,
+            'expected_spacingbefore' => 0,
+            'expected_spacingafter' => webpart::DEFAULT_SPACER_SPACING,
+            'expected_dividerstyle' => webpart::DEFAULT_DIVIDER_STYLE,
         ]
     ];
 }

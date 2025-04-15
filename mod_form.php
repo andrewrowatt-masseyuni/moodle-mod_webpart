@@ -56,7 +56,7 @@ class mod_webpart_mod_form extends moodleform_mod {
             'spacer' => 'Space'
         ];
         $select = $mform->addElement('select', 'contenttype', get_string('contenttype','mod_webpart'), $contentypeoptions);
-        $select->setSelected('heading');
+        $select->setSelected(\mod_webpart\webpart::DEFAULT_CONTENT_TYPE);
 
         $spacingoptions = [
             '0' => 'No spacing',
@@ -67,11 +67,11 @@ class mod_webpart_mod_form extends moodleform_mod {
             '6' => 'Extra large spacing (3em)'
         ];
         $select = $mform->addElement('select', 'spacingbefore', get_string('spacingbefore','mod_webpart'), $spacingoptions);
-        $select->setSelected('2');
+        $select->setSelected(\mod_webpart\webpart::DEFAULT_SPACING_BEFORE);
         $mform->hideIf('spacingbefore', 'contenttype', 'in', ['spacer']);
 
         $mform->addElement('text', 'heading', 'Heading', ['size' => 32]);
-        $mform->setDefault('heading', '');
+        $mform->setDefault('heading', \mod_webpart\webpart::DEFAULT_HEADING);
         $mform->setType('heading', PARAM_TEXT);
         $mform->hideIf('heading', 'contenttype', 'in', ['divider','spacer']);
 
@@ -82,7 +82,7 @@ class mod_webpart_mod_form extends moodleform_mod {
             'h6' => 'H6'
         ];
         $select = $mform->addElement('select', 'headinglevel', get_string('headinglevel','mod_webpart'), $headingleveloptions);
-        $select->setSelected('h3');
+        $select->setSelected(\mod_webpart\webpart::DEFAULT_HEADING_LEVEL);
         $mform->hideIf('headinglevel', 'contenttype', 'in', ['divider','spacer']);
 
         $dividerstyleoptions = [
@@ -91,12 +91,16 @@ class mod_webpart_mod_form extends moodleform_mod {
             'theme3' => 'Theme 3'
         ];
         $select = $mform->addElement('select', 'dividerstyle', get_string('dividerstyle','mod_webpart'), $dividerstyleoptions);
-        $select->setSelected('h3');
+        $select->setSelected(\mod_webpart\webpart::DEFAULT_DIVIDER_STYLE);
         $mform->hideIf('dividerstyle', 'contenttype', 'in', ['heading','spacer']);
 
         $select = $mform->addElement('select', 'spacingafter', get_string('spacingafter','mod_webpart'), $spacingoptions);
-        $select->setSelected('2');
+        $select->setSelected(\mod_webpart\webpart::DEFAULT_SPACING_AFTER);
         $mform->hideIf('spacingafter', 'contenttype', 'in', ['spacer']);
+
+        $select = $mform->addElement('select', 'spacerspacing', get_string('spacerspacing','mod_webpart'), $spacingoptions);
+        $select->setSelected(\mod_webpart\webpart::DEFAULT_SPACER_SPACING);
+        $mform->hideIf('spacerspacing', 'contenttype', 'in', ['heading','divider']);
 
         $this->standard_coursemodule_elements();
 
