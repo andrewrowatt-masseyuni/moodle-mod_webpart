@@ -15,21 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Cognitive depth indicator - simplelabel.
+ * Cognitive depth indicator - webpart.
  *
- * @package   mod_simplelabel
+ * @package   mod_webpart
  * @copyright 2017 David Monllao {@link http://www.davidmonllao.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_simplelabel\analytics\indicator;
+namespace mod_webpart\analytics\indicator;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Cognitive depth indicator - simplelabel.
+ * Cognitive depth indicator - webpart.
  *
- * @package   mod_simplelabel
+ * @package   mod_webpart
  * @copyright 2017 David Monllao {@link http://www.davidmonllao.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -43,7 +43,7 @@ class cognitive_depth extends activity_base {
      * @return \lang_string
      */
     public static function get_name() : \lang_string {
-        return new \lang_string('indicator:cognitivedepth', 'mod_simplelabel');
+        return new \lang_string('indicator:cognitivedepth', 'mod_webpart');
     }
 
     public function get_indicator_type() {

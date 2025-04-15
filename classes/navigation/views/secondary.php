@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace mod_simplelabel\navigation\views;
+namespace mod_webpart\navigation\views;
 
 use core\navigation\views\secondary as core_secondary;
 use settings_navigation;
@@ -25,7 +25,7 @@ use navigation_node;
  *
  * Custom implementation for a plugin.
  *
- * @package     mod_simplelabel
+ * @package     mod_webpart
  * @category    navigation
  * @copyright   2021 onwards Peter Dias
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -33,7 +33,7 @@ use navigation_node;
 class secondary extends core_secondary {
 
     /**
-     * Custom module construct for simplelabel
+     * Custom module construct for webpart
      *
      * @param settings_navigation $settingsnav The settings navigation object related to the module page
      * @param navigation_node|null $rootnode The node where the module navigation nodes should be added into as children.
@@ -45,7 +45,7 @@ class secondary extends core_secondary {
         $rootnode = $rootnode ?? $this;
         $node = $rootnode->find('modulepage', null);
         if ($node) {
-            // Simple label does not have a view and redirects to the course page. Change text to indicate this.
+            // Web part does not have a view and redirects to the course page. Change text to indicate this.
             $node->text = get_string('course');
         }
     }

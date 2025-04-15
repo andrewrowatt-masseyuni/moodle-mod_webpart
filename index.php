@@ -16,9 +16,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library of functions and constants for module simplelabel
+ * Library of functions and constants for module webpart
  *
- * @package mod_simplelabel
+ * @package mod_webpart
  * @copyright  2003 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,7 +28,7 @@ require_once("lib.php");
 
 $id = required_param('id',PARAM_INT);   // course
 
-$PAGE->set_url('/mod/simplelabel/index.php', array('id'=>$id));
+$PAGE->set_url('/mod/webpart/index.php', array('id'=>$id));
 
 redirect("$CFG->wwwroot/course/view.php?id=$id");
 

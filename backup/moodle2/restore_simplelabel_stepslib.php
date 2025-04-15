@@ -16,7 +16,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package mod_simplelabel
+ * @package mod_webpart
  * @subpackage backup-moodle2
  * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,20 +27,20 @@
  */
 
 /**
- * Structure step to restore one simplelabel activity
+ * Structure step to restore one webpart activity
  */
-class restore_simplelabel_activity_structure_step extends restore_activity_structure_step {
+class restore_webpart_activity_structure_step extends restore_activity_structure_step {
 
     protected function define_structure() {
 
         $paths = array();
-        $paths[] = new restore_path_element('simplelabel', '/activity/simplelabel');
+        $paths[] = new restore_path_element('webpart', '/activity/webpart');
 
         // Return the paths wrapped into standard activity structure
         return $this->prepare_activity_structure($paths);
     }
 
-    protected function process_simplelabel($data) {
+    protected function process_webpart($data) {
         global $DB;
 
         $data = (object)$data;
@@ -50,15 +50,15 @@ class restore_simplelabel_activity_structure_step extends restore_activity_struc
         // Any changes to the list of dates that needs to be rolled should be same during course restore and course reset.
         // See MDL-9367.
 
-        // insert the simplelabel record
-        $newitemid = $DB->insert_record('simplelabel', $data);
+        // insert the webpart record
+        $newitemid = $DB->insert_record('webpart', $data);
         // immediately after inserting "activity" record, call this
         $this->apply_activity_instance($newitemid);
     }
 
     protected function after_execute() {
-        // Add simplelabel related files, no need to match by itemname (just internally handled context)
-        $this->add_related_files('mod_simplelabel', 'intro', null);
+        // Add webpart related files, no need to match by itemname (just internally handled context)
+        $this->add_related_files('mod_webpart', 'intro', null);
     }
 
 }

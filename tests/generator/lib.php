@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * mod_simplelabel data generator
+ * mod_webpart data generator
  *
- * @package    mod_simplelabel
+ * @package    mod_webpart
  * @category   test
  * @copyright  2013 Jerome Mouneyrac
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,14 +27,14 @@ defined('MOODLE_INTERNAL') || die();
 
 
 /**
- * Simple label module data generator class
+ * Web part module data generator class
  *
- * @package    mod_simplelabel
+ * @package    mod_webpart
  * @category   test
  * @copyright  2013 Jerome Mouneyrac
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_simplelabel_generator extends testing_module_generator {
+class mod_webpart_generator extends testing_module_generator {
 
     public function create_instance($record = null, array $options = null) {
         $record = (array)$record;

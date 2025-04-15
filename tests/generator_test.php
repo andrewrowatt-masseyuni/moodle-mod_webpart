@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace mod_simplelabel;
+namespace mod_webpart;
 
 /**
- * PHPUnit simplelabel generator testcase
+ * PHPUnit webpart generator testcase
  *
- * @package    mod_simplelabel
+ * @package    mod_webpart
  * @category   phpunit
  * @copyright  2013 Jerome Mouneyrac
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,26 +30,26 @@ final class generator_test extends \advanced_testcase {
 
         $this->resetAfterTest(true);
 
-        $this->assertEquals(0, $DB->count_records('simplelabel'));
+        $this->assertEquals(0, $DB->count_records('webpart'));
 
         $course = $this->getDataGenerator()->create_course();
 
-        /** @var mod_simplelabel_generator $generator */
-        $generator = $this->getDataGenerator()->get_plugin_generator('mod_simplelabel');
-        $this->assertInstanceOf('mod_simplelabel_generator', $generator);
-        $this->assertEquals('simplelabel', $generator->get_modulename());
+        /** @var mod_webpart_generator $generator */
+        $generator = $this->getDataGenerator()->get_plugin_generator('mod_webpart');
+        $this->assertInstanceOf('mod_webpart_generator', $generator);
+        $this->assertEquals('webpart', $generator->get_modulename());
 
         $generator->create_instance(array('course'=>$course->id));
         $generator->create_instance(array('course'=>$course->id));
-        $simplelabel = $generator->create_instance(array('course'=>$course->id));
-        $this->assertEquals(3, $DB->count_records('simplelabel'));
+        $webpart = $generator->create_instance(array('course'=>$course->id));
+        $this->assertEquals(3, $DB->count_records('webpart'));
 
-        $cm = get_coursemodule_from_instance('simplelabel', $simplelabel->id);
-        $this->assertEquals($simplelabel->id, $cm->instance);
-        $this->assertEquals('simplelabel', $cm->modname);
+        $cm = get_coursemodule_from_instance('webpart', $webpart->id);
+        $this->assertEquals($webpart->id, $cm->instance);
+        $this->assertEquals('webpart', $cm->modname);
         $this->assertEquals($course->id, $cm->course);
 
         $context = \context_module::instance($cm->id);
-        $this->assertEquals($simplelabel->cmid, $context->instanceid);
+        $this->assertEquals($webpart->cmid, $context->instanceid);
     }
 }

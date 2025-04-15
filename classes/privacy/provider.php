@@ -15,18 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy Subsystem implementation for mod_simplelabel.
+ * Privacy Subsystem implementation for mod_webpart.
  *
- * @package    mod_simplelabel
+ * @package    mod_webpart
  * @copyright  2018 Zig Tan <zig@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace mod_simplelabel\privacy;
+namespace mod_webpart\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The mod_simplelabel module does not store any data.
+ * The mod_webpart module does not store any data.
  *
  * @copyright  2018 Zig Tan <zig@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

@@ -15,15 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Simple label module upgrade
+ * Web part module upgrade
  *
- * @package mod_simplelabel
+ * @package mod_webpart
  * @copyright  2006 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 // This file keeps track of upgrades to
-// the simplelabel module
+// the webpart module
 //
 // Sometimes, changes between versions involve
 // alterations to database structures and other
@@ -44,7 +44,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-function xmldb_simplelabel_upgrade($oldversion) {
+function xmldb_webpart_upgrade($oldversion) {
     global $CFG, $DB;
 
     // Automatically generated Moodle v3.9.0 release upgrade line.
@@ -54,7 +54,7 @@ function xmldb_simplelabel_upgrade($oldversion) {
     // Put any upgrade step following this.
 
     if ($oldversion < 2022101300) {
-        $module = $DB->get_field('modules', 'id', ['name' => 'simplelabel']);
+        $module = $DB->get_field('modules', 'id', ['name' => 'webpart']);
         $DB->execute('
             UPDATE {course_modules}
                SET visible = 0, visibleoncoursepage = 1
@@ -63,7 +63,7 @@ function xmldb_simplelabel_upgrade($oldversion) {
                    AND visibleoncoursepage = 0',
             ['module' => $module]
         );
-        upgrade_mod_savepoint(true, 2022101300, 'simplelabel');
+        upgrade_mod_savepoint(true, 2022101300, 'webpart');
     }
 
     // Automatically generated Moodle v4.1.0 release upgrade line.
@@ -74,42 +74,42 @@ function xmldb_simplelabel_upgrade($oldversion) {
 
         $select = $DB->sql_like('name', ':tofind');
         $params = ['tofind' => '%@@PLUGINFILE@@%'];
-        $total = $DB->count_records_select('simplelabel', $select, $params);
+        $total = $DB->count_records_select('webpart', $select, $params);
         if ($total > 0) {
-            $simplelabels = $DB->get_recordset_select('simplelabel', $select, $params, 'id, name, intro');
+            $webparts = $DB->get_recordset_select('webpart', $select, $params, 'id, name, intro');
 
             // Show a progress bar.
-            $pbar = new progress_bar('upgrademodsimplelabelpluginfile', 500, true);
+            $pbar = new progress_bar('upgrademodwebpartpluginfile', 500, true);
             $current = 0;
 
-            $defaultname = get_string('modulename', 'simplelabel');
-            foreach ($simplelabels as $simplelabel) {
-                $originalname = $simplelabel->name;
-                // Make sure that all simplelabels have now the same name according to the new convention.
-                // Note this is the same (and duplicated) code as in get_simplelabel_name as we cannot call any API function
+            $defaultname = get_string('modulename', 'webpart');
+            foreach ($webparts as $webpart) {
+                $originalname = $webpart->name;
+                // Make sure that all webparts have now the same name according to the new convention.
+                // Note this is the same (and duplicated) code as in get_webpart_name as we cannot call any API function
                 // during upgrade.
-                $name = html_to_text(format_string($simplelabel->intro, true));
+                $name = html_to_text(format_string($webpart->intro, true));
                 $name = preg_replace('/@@PLUGINFILE@@\/[[:^space:]]+/i', '', $name);
                 // Remove double space and also nbsp; characters.
                 $name = preg_replace('/\s+/u', ' ', $name);
                 $name = trim($name);
-                if (core_text::strlen($name) > SIMPLELABEL_MAX_NAME_LENGTH) {
-                    $name = core_text::substr($name, 0, SIMPLELABEL_MAX_NAME_LENGTH) . "...";
+                if (core_text::strlen($name) > WEBPART_MAX_NAME_LENGTH) {
+                    $name = core_text::substr($name, 0, WEBPART_MAX_NAME_LENGTH) . "...";
                 }
                 if (empty($name)) {
                     $name = $defaultname;
                 }
-                $simplelabel->name = $name;
+                $webpart->name = $name;
                 if ($originalname !== $name) {
-                    $DB->update_record('simplelabel', $simplelabel);
+                    $DB->update_record('webpart', $webpart);
                 }
                 $current++;
-                $pbar->update($current, $total, "Upgrading simplelabel activity names - $current/$total.");
+                $pbar->update($current, $total, "Upgrading webpart activity names - $current/$total.");
             }
-            $simplelabels->close();
+            $webparts->close();
         }
         force_current_language($prevlang);
-        upgrade_mod_savepoint(true, 2022112801, 'simplelabel');
+        upgrade_mod_savepoint(true, 2022112801, 'webpart');
     }
 
     return true;

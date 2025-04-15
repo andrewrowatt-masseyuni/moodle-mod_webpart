@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace mod_simplelabel;
+namespace mod_webpart;
 
 /**
- * Unit tests for the activity simplelabel's lib.
+ * Unit tests for the activity webpart's lib.
  *
- * @package    mod_simplelabel
+ * @package    mod_webpart
  * @category   test
  * @copyright  2017 Mark Nelson <markn@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -34,20 +34,20 @@ final class lib_test extends \advanced_testcase {
         $this->setAdminUser();
     }
 
-    public function test_simplelabel_core_calendar_provide_event_action() {
+    public function test_webpart_core_calendar_provide_event_action() {
         // Create the activity.
         $course = $this->getDataGenerator()->create_course();
-        $simplelabel = $this->getDataGenerator()->create_module('simplelabel', array('course' => $course->id));
+        $webpart = $this->getDataGenerator()->create_module('webpart', array('course' => $course->id));
 
         // Create a calendar event.
-        $event = $this->create_action_event($course->id, $simplelabel->id,
+        $event = $this->create_action_event($course->id, $webpart->id,
             \core_completion\api::COMPLETION_EVENT_TYPE_DATE_COMPLETION_EXPECTED);
 
         // Create an action factory.
         $factory = new \core_calendar\action_factory();
 
         // Decorate action event.
-        $actionevent = mod_simplelabel_core_calendar_provide_event_action($event, $factory);
+        $actionevent = mod_webpart_core_calendar_provide_event_action($event, $factory);
 
         // Confirm the event was decorated.
         $this->assertInstanceOf('\core_calendar\local\event\value_objects\action', $actionevent);
@@ -57,15 +57,15 @@ final class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_simplelabel_core_calendar_provide_event_action_as_non_user() {
+    public function test_webpart_core_calendar_provide_event_action_as_non_user() {
         global $CFG;
 
         // Create the activity.
         $course = $this->getDataGenerator()->create_course();
-        $simplelabel = $this->getDataGenerator()->create_module('simplelabel', array('course' => $course->id));
+        $webpart = $this->getDataGenerator()->create_module('webpart', array('course' => $course->id));
 
         // Create a calendar event.
-        $event = $this->create_action_event($course->id, $simplelabel->id,
+        $event = $this->create_action_event($course->id, $webpart->id,
                 \core_completion\api::COMPLETION_EVENT_TYPE_DATE_COMPLETION_EXPECTED);
 
         // Now log out.
@@ -76,22 +76,22 @@ final class lib_test extends \advanced_testcase {
         $factory = new \core_calendar\action_factory();
 
         // Decorate action event.
-        $actionevent = mod_simplelabel_core_calendar_provide_event_action($event, $factory);
+        $actionevent = mod_webpart_core_calendar_provide_event_action($event, $factory);
 
         // Confirm the event is not shown at all.
         $this->assertNull($actionevent);
     }
 
-    public function test_simplelabel_core_calendar_provide_event_action_in_hidden_section() {
+    public function test_webpart_core_calendar_provide_event_action_in_hidden_section() {
         // Create the activity.
         $course = $this->getDataGenerator()->create_course();
-        $simplelabel = $this->getDataGenerator()->create_module('simplelabel', array('course' => $course->id));
+        $webpart = $this->getDataGenerator()->create_module('webpart', array('course' => $course->id));
 
         // Create a student.
         $student = $this->getDataGenerator()->create_and_enrol($course, 'student');
 
         // Create a calendar event.
-        $event = $this->create_action_event($course->id, $simplelabel->id,
+        $event = $this->create_action_event($course->id, $webpart->id,
                 \core_completion\api::COMPLETION_EVENT_TYPE_DATE_COMPLETION_EXPECTED);
 
         // Set sections 0 as hidden.
@@ -101,24 +101,24 @@ final class lib_test extends \advanced_testcase {
         $factory = new \core_calendar\action_factory();
 
         // Decorate action event for the student.
-        $actionevent = mod_simplelabel_core_calendar_provide_event_action($event, $factory, $student->id);
+        $actionevent = mod_webpart_core_calendar_provide_event_action($event, $factory, $student->id);
 
         // Confirm the event is not shown at all.
         $this->assertNull($actionevent);
     }
 
-    public function test_simplelabel_core_calendar_provide_event_action_for_user() {
+    public function test_webpart_core_calendar_provide_event_action_for_user() {
         global $CFG;
 
         // Create the activity.
         $course = $this->getDataGenerator()->create_course();
-        $simplelabel = $this->getDataGenerator()->create_module('simplelabel', array('course' => $course->id));
+        $webpart = $this->getDataGenerator()->create_module('webpart', array('course' => $course->id));
 
         // Enrol a student in the course.
         $student = $this->getDataGenerator()->create_and_enrol($course, 'student');
 
         // Create a calendar event.
-        $event = $this->create_action_event($course->id, $simplelabel->id,
+        $event = $this->create_action_event($course->id, $webpart->id,
             \core_completion\api::COMPLETION_EVENT_TYPE_DATE_COMPLETION_EXPECTED);
 
         // Now, log out.
@@ -129,7 +129,7 @@ final class lib_test extends \advanced_testcase {
         $factory = new \core_calendar\action_factory();
 
         // Decorate action event for the student.
-        $actionevent = mod_simplelabel_core_calendar_provide_event_action($event, $factory, $student->id);
+        $actionevent = mod_webpart_core_calendar_provide_event_action($event, $factory, $student->id);
 
         // Confirm the event was decorated.
         $this->assertInstanceOf('\core_calendar\local\event\value_objects\action', $actionevent);
@@ -139,21 +139,21 @@ final class lib_test extends \advanced_testcase {
         $this->assertTrue($actionevent->is_actionable());
     }
 
-    public function test_simplelabel_core_calendar_provide_event_action_already_completed() {
+    public function test_webpart_core_calendar_provide_event_action_already_completed() {
         global $CFG;
 
         $CFG->enablecompletion = 1;
 
         // Create the activity.
         $course = $this->getDataGenerator()->create_course(array('enablecompletion' => 1));
-        $simplelabel = $this->getDataGenerator()->create_module('simplelabel', array('course' => $course->id),
+        $webpart = $this->getDataGenerator()->create_module('webpart', array('course' => $course->id),
             array('completion' => 2, 'completionview' => 1, 'completionexpected' => time() + DAYSECS));
 
         // Get some additional data.
-        $cm = get_coursemodule_from_instance('simplelabel', $simplelabel->id);
+        $cm = get_coursemodule_from_instance('webpart', $webpart->id);
 
         // Create a calendar event.
-        $event = $this->create_action_event($course->id, $simplelabel->id,
+        $event = $this->create_action_event($course->id, $webpart->id,
             \core_completion\api::COMPLETION_EVENT_TYPE_DATE_COMPLETION_EXPECTED);
 
         // Mark the activity as completed.
@@ -164,30 +164,30 @@ final class lib_test extends \advanced_testcase {
         $factory = new \core_calendar\action_factory();
 
         // Decorate action event.
-        $actionevent = mod_simplelabel_core_calendar_provide_event_action($event, $factory);
+        $actionevent = mod_webpart_core_calendar_provide_event_action($event, $factory);
 
         // Ensure result was null.
         $this->assertNull($actionevent);
     }
 
-    public function test_simplelabel_core_calendar_provide_event_action_already_completed_for_user() {
+    public function test_webpart_core_calendar_provide_event_action_already_completed_for_user() {
         global $CFG;
 
         $CFG->enablecompletion = 1;
 
         // Create the activity.
         $course = $this->getDataGenerator()->create_course(array('enablecompletion' => 1));
-        $simplelabel = $this->getDataGenerator()->create_module('simplelabel', array('course' => $course->id),
+        $webpart = $this->getDataGenerator()->create_module('webpart', array('course' => $course->id),
                 array('completion' => 2, 'completionview' => 1, 'completionexpected' => time() + DAYSECS));
 
         // Enrol a student in the course.
         $student = $this->getDataGenerator()->create_and_enrol($course, 'student');
 
         // Get some additional data.
-        $cm = get_coursemodule_from_instance('simplelabel', $simplelabel->id);
+        $cm = get_coursemodule_from_instance('webpart', $webpart->id);
 
         // Create a calendar event.
-        $event = $this->create_action_event($course->id, $simplelabel->id,
+        $event = $this->create_action_event($course->id, $webpart->id,
                 \core_completion\api::COMPLETION_EVENT_TYPE_DATE_COMPLETION_EXPECTED);
 
         // Mark the activity as completed for the student.
@@ -198,40 +198,40 @@ final class lib_test extends \advanced_testcase {
         $factory = new \core_calendar\action_factory();
 
         // Decorate action event for the student.
-        $actionevent = mod_simplelabel_core_calendar_provide_event_action($event, $factory, $student->id);
+        $actionevent = mod_webpart_core_calendar_provide_event_action($event, $factory, $student->id);
 
         // Ensure result was null.
         $this->assertNull($actionevent);
     }
 
     /**
-     * Check simplelabel name with different content inserted in the simplelabel intro.
+     * Check webpart name with different content inserted in the webpart intro.
      *
-     * @param string $simplelabelcontent
-     * @param string $simplelabelformat
-     * @param string $expectedsimplelabelname
+     * @param string $webpartcontent
+     * @param string $webpartformat
+     * @param string $expectedwebpartname
      * @return void
-     * @covers       \get_simplelabel_name
-     * @dataProvider simplelabel_get_name_data_provider
+     * @covers       \get_webpart_name
+     * @dataProvider webpart_get_name_data_provider
      */
-    public function test_simplelabel_get_simplelabel_name(string $simplelabelcontent, string $simplelabelformat, string $expectedsimplelabelname): void {
+    public function test_webpart_get_webpart_name(string $webpartcontent, string $webpartformat, string $expectedwebpartname): void {
         $course = $this->getDataGenerator()->create_course();
-        // When creating the module, get_simplelabel_name is called and fills simplelabel->name.
-        $simplelabel = $this->getDataGenerator()->create_module('simplelabel', [
+        // When creating the module, get_webpart_name is called and fills webpart->name.
+        $webpart = $this->getDataGenerator()->create_module('webpart', [
                 'course' => $course->id,
-                'intro' => $simplelabelcontent,
-                'introformat' => $simplelabelformat
+                'intro' => $webpartcontent,
+                'introformat' => $webpartformat
             ]
         );
-        $this->assertEquals($expectedsimplelabelname, $simplelabel->name);
+        $this->assertEquals($expectedwebpartname, $webpart->name);
     }
 
     /**
-     * Dataprovider for test_simplelabel_get_simplelabel_name
+     * Dataprovider for test_webpart_get_webpart_name
      *
      * @return array
      */
-    public static function simplelabel_get_name_data_provider(): array {
+    public static function webpart_get_name_data_provider(): array {
         return [
             'simple' => [
                 'content' => '<p>Simple textual content<p>',
@@ -241,7 +241,7 @@ final class lib_test extends \advanced_testcase {
             'empty' => [
                 'content' => '',
                 'format' => FORMAT_HTML,
-                'expected' => 'Test simplelabel 1'
+                'expected' => 'Test webpart 1'
             ],
             'withaudiocontent' => [
                 'content' => '<p>Test with audio</p>
@@ -283,12 +283,12 @@ final class lib_test extends \advanced_testcase {
             'empty spaces' => [
                 'content' => ' &nbsp; ',
                 'format' => FORMAT_HTML,
-                'expected' => 'Simple label'
+                'expected' => 'Web part'
             ],
             'only html' => [
                 'content' => '<audio controls="controls"><source src=""></audio>',
                 'format' => FORMAT_HTML,
-                'expected' => 'Simple label'
+                'expected' => 'Web part'
             ],
             'markdown' => [
                 'content' => "##Simple Title\n simple markdown format",
@@ -329,7 +329,7 @@ final class lib_test extends \advanced_testcase {
     private function create_action_event($courseid, $instanceid, $eventtype) {
         $event = new \stdClass();
         $event->name = 'Calendar event';
-        $event->modulename  = 'simplelabel';
+        $event->modulename  = 'webpart';
         $event->courseid = $courseid;
         $event->instance = $instanceid;
         $event->type = CALENDAR_EVENT_TYPE_ACTION;

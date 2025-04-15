@@ -16,38 +16,38 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library of functions and constants for module simplelabel
+ * Library of functions and constants for module webpart
  *
- * @package mod_simplelabel
+ * @package mod_webpart
  * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-/** SIMPLELABEL_MAX_NAME_LENGTH = 50 */
-define("SIMPLELABEL_MAX_NAME_LENGTH", 50);
+/** WEBPART_MAX_NAME_LENGTH = 50 */
+define("WEBPART_MAX_NAME_LENGTH", 50);
 
 /**
- * @uses SIMPLELABEL_MAX_NAME_LENGTH
- * @param object $simplelabel
+ * @uses WEBPART_MAX_NAME_LENGTH
+ * @param object $webpart
  * @return string
  */
-function get_simplelabel_name($simplelabel) {
-    $context = context_module::instance($simplelabel->coursemodule);
-    $intro = format_text($simplelabel->intro, $simplelabel->introformat, ['filter' => false, 'context' => $context]);
+function get_webpart_name($webpart) {
+    $context = context_module::instance($webpart->coursemodule);
+    $intro = format_text($webpart->intro, $webpart->introformat, ['filter' => false, 'context' => $context]);
     $name = html_to_text(format_string($intro, true, ['context' => $context]));
     $name = preg_replace('/@@PLUGINFILE@@\/[[:^space:]]+/i', '', $name);
     // Remove double space and also nbsp; characters.
     $name = preg_replace('/\s+/u', ' ', $name);
     $name = trim($name);
-    if (core_text::strlen($name) > SIMPLELABEL_MAX_NAME_LENGTH) {
-        $name = core_text::substr($name, 0, SIMPLELABEL_MAX_NAME_LENGTH) . "...";
+    if (core_text::strlen($name) > WEBPART_MAX_NAME_LENGTH) {
+        $name = core_text::substr($name, 0, WEBPART_MAX_NAME_LENGTH) . "...";
     }
 
     if (empty($name)) {
         // arbitrary name
-        $name = get_string('modulename','simplelabel');
+        $name = get_string('modulename','webpart');
     }
 
     return $name;
@@ -59,29 +59,29 @@ function get_simplelabel_name($simplelabel) {
  * of the new instance.
  *
  * @global object
- * @param object $simplelabel
+ * @param object $webpart
  * @return bool|int
  */
-function simplelabel_add_instance($simplelabel) {
+function webpart_add_instance($webpart) {
     global $DB;
 
-    $simplelabel->name = get_simplelabel_name($simplelabel);
-    $simplelabel->timemodified = time();
+    $webpart->name = get_webpart_name($webpart);
+    $webpart->timemodified = time();
 
-    $id = $DB->insert_record("simplelabel", $simplelabel);
+    $id = $DB->insert_record("webpart", $webpart);
 
-    $completiontimeexpected = !empty($simplelabel->completionexpected) ? $simplelabel->completionexpected : null;
-    \core_completion\api::update_completion_date_event($simplelabel->coursemodule, 'simplelabel', $id, $completiontimeexpected);
+    $completiontimeexpected = !empty($webpart->completionexpected) ? $webpart->completionexpected : null;
+    \core_completion\api::update_completion_date_event($webpart->coursemodule, 'webpart', $id, $completiontimeexpected);
 
     return $id;
 }
 
 /**
- * Sets the special simplelabel display on course page.
+ * Sets the special webpart display on course page.
  *
  * @param cm_info $cm Course-module object
  */
-function simplelabel_cm_info_view(cm_info $cm) {
+function webpart_cm_info_view(cm_info $cm) {
     $cm->set_custom_cmlist_item(true);
 }
 
@@ -91,20 +91,20 @@ function simplelabel_cm_info_view(cm_info $cm) {
  * will update an existing instance with new data.
  *
  * @global object
- * @param object $simplelabel
+ * @param object $webpart
  * @return bool
  */
-function simplelabel_update_instance($simplelabel) {
+function webpart_update_instance($webpart) {
     global $DB;
 
-    $simplelabel->name = get_simplelabel_name($simplelabel);
-    $simplelabel->timemodified = time();
-    $simplelabel->id = $simplelabel->instance;
+    $webpart->name = get_webpart_name($webpart);
+    $webpart->timemodified = time();
+    $webpart->id = $webpart->instance;
 
-    $completiontimeexpected = !empty($simplelabel->completionexpected) ? $simplelabel->completionexpected : null;
-    \core_completion\api::update_completion_date_event($simplelabel->coursemodule, 'simplelabel', $simplelabel->id, $completiontimeexpected);
+    $completiontimeexpected = !empty($webpart->completionexpected) ? $webpart->completionexpected : null;
+    \core_completion\api::update_completion_date_event($webpart->coursemodule, 'webpart', $webpart->id, $completiontimeexpected);
 
-    return $DB->update_record("simplelabel", $simplelabel);
+    return $DB->update_record("webpart", $webpart);
 }
 
 /**
@@ -116,19 +116,19 @@ function simplelabel_update_instance($simplelabel) {
  * @param int $id
  * @return bool
  */
-function simplelabel_delete_instance($id) {
+function webpart_delete_instance($id) {
     global $DB;
 
-    if (! $simplelabel = $DB->get_record("simplelabel", array("id"=>$id))) {
+    if (! $webpart = $DB->get_record("webpart", array("id"=>$id))) {
         return false;
     }
 
     $result = true;
 
-    $cm = get_coursemodule_from_instance('simplelabel', $id);
-    \core_completion\api::update_completion_date_event($cm->id, 'simplelabel', $simplelabel->id, null);
+    $cm = get_coursemodule_from_instance('webpart', $id);
+    \core_completion\api::update_completion_date_event($cm->id, 'webpart', $webpart->id, null);
 
-    if (! $DB->delete_records("simplelabel", array("id"=>$simplelabel->id))) {
+    if (! $DB->delete_records("webpart", array("id"=>$webpart->id))) {
         $result = false;
     }
 
@@ -145,19 +145,19 @@ function simplelabel_delete_instance($id) {
  * @param object $coursemodule
  * @return cached_cm_info|null
  */
-function simplelabel_get_coursemodule_info($coursemodule) {
+function webpart_get_coursemodule_info($coursemodule) {
     global $DB;
 
-    if ($simplelabel = $DB->get_record('simplelabel', array('id'=>$coursemodule->instance), 'id, name, intro, introformat')) {
-        if (empty($simplelabel->name)) {
-            // simplelabel name missing, fix it
-            $simplelabel->name = "simplelabel{$simplelabel->id}";
-            $DB->set_field('simplelabel', 'name', $simplelabel->name, array('id'=>$simplelabel->id));
+    if ($webpart = $DB->get_record('webpart', array('id'=>$coursemodule->instance), 'id, name, intro, introformat')) {
+        if (empty($webpart->name)) {
+            // webpart name missing, fix it
+            $webpart->name = "webpart{$webpart->id}";
+            $DB->set_field('webpart', 'name', $webpart->name, array('id'=>$webpart->id));
         }
         $info = new cached_cm_info();
         // no filtering hre because this info is cached and filtered later
-        $info->content = format_module_intro('simplelabel', $simplelabel, $coursemodule->id, false);
-        $info->name  = $simplelabel->name;
+        $info->content = format_module_intro('webpart', $webpart, $coursemodule->id, false);
+        $info->name  = $webpart->name;
         return $info;
     } else {
         return null;
@@ -170,7 +170,7 @@ function simplelabel_get_coursemodule_info($coursemodule) {
  * @param object $data the data submitted from the reset course.
  * @return array status array
  */
-function simplelabel_reset_userdata($data) {
+function webpart_reset_userdata($data) {
 
     // Any changes to the list of dates that needs to be rolled should be same during course restore and course reset.
     // See MDL-9367.
@@ -189,9 +189,9 @@ function simplelabel_reset_userdata($data) {
  * @param string $feature FEATURE_xx constant for requested feature
  * @return mixed True if module supports feature, false if not, null if doesn't know or string for the module purpose.
  */
-function simplelabel_supports($feature) {
+function webpart_supports($feature) {
     switch($feature) {
-        case FEATURE_IDNUMBER:                return false;
+        case FEATURE_IDNUMBER:                return true;
         case FEATURE_GROUPS:                  return false;
         case FEATURE_GROUPINGS:               return false;
         case FEATURE_MOD_INTRO:               return false;
@@ -211,9 +211,9 @@ function simplelabel_supports($feature) {
  * Register the ability to handle drag and drop file uploads
  * @return array containing details of the files / types the mod can handle
  */
-function simplelabel_dndupload_register() {
-    $strdnd = get_string('dnduploadsimplelabel', 'mod_simplelabel');
-    if (get_config('simplelabel', 'dndmedia')) {
+function webpart_dndupload_register() {
+    $strdnd = get_string('dnduploadwebpart', 'mod_webpart');
+    if (get_config('webpart', 'dndmedia')) {
         $mediaextensions = file_get_typegroup('extension', ['web_image', 'web_video', 'web_audio']);
         $files = array();
         foreach ($mediaextensions as $extn) {
@@ -225,7 +225,7 @@ function simplelabel_dndupload_register() {
         $ret = array();
     }
 
-    $strdndtext = get_string('dnduploadsimplelabeltext', 'mod_simplelabel');
+    $strdndtext = get_string('dnduploadwebparttext', 'mod_webpart');
     return array_merge($ret, array('types' => array(
         array('identifier' => 'text/html', 'message' => $strdndtext, 'noname' => true),
         array('identifier' => 'text', 'message' => $strdndtext, 'noname' => true)
@@ -237,7 +237,7 @@ function simplelabel_dndupload_register() {
  * @param object $uploadinfo details of the file / content that has been uploaded
  * @return int instance id of the newly created mod
  */
-function simplelabel_dndupload_handle($uploadinfo) {
+function webpart_dndupload_handle($uploadinfo) {
     global $USER;
 
     // Gather the required info.
@@ -248,7 +248,7 @@ function simplelabel_dndupload_handle($uploadinfo) {
     $data->introformat = FORMAT_HTML;
     $data->coursemodule = $uploadinfo->coursemodule;
 
-    // Extract the first (and only) file from the file area and add it to the simplelabel as an img tag.
+    // Extract the first (and only) file from the file area and add it to the webpart as an img tag.
     if (!empty($uploadinfo->draftitemid)) {
         $fs = get_file_storage();
         $draftcontext = context_user::instance($USER->id);
@@ -257,14 +257,14 @@ function simplelabel_dndupload_handle($uploadinfo) {
         if ($file = reset($files)) {
             if (file_mimetype_in_typegroup($file->get_mimetype(), 'web_image')) {
                 // It is an image - resize it, if too big, then insert the img tag.
-                $config = get_config('simplelabel');
-                $data->intro = simplelabel_generate_resized_image($file, $config->dndresizewidth, $config->dndresizeheight);
+                $config = get_config('webpart');
+                $data->intro = webpart_generate_resized_image($file, $config->dndresizewidth, $config->dndresizeheight);
             } else {
                 // We aren't supposed to be supporting non-image types here, but fallback to adding a link, just in case.
                 $url = moodle_url::make_draftfile_url($file->get_itemid(), $file->get_filepath(), $file->get_filename());
                 $data->intro = html_writer::link($url, $file->get_filename());
             }
-            $data->intro = file_save_draft_area_files($uploadinfo->draftitemid, $context->id, 'mod_simplelabel', 'intro', 0,
+            $data->intro = file_save_draft_area_files($uploadinfo->draftitemid, $context->id, 'mod_webpart', 'intro', 0,
                                                       null, $data->intro);
         }
     } else if (!empty($uploadinfo->content)) {
@@ -274,7 +274,7 @@ function simplelabel_dndupload_handle($uploadinfo) {
         }
     }
 
-    return simplelabel_add_instance($data, null);
+    return webpart_add_instance($data, null);
 }
 
 /**
@@ -282,9 +282,9 @@ function simplelabel_dndupload_handle($uploadinfo) {
  * @param stored_file $file the image file to process
  * @param int $maxwidth the maximum width allowed for the image
  * @param int $maxheight the maximum height allowed for the image
- * @return string HTML fragment to add to the simplelabel
+ * @return string HTML fragment to add to the webpart
  */
-function simplelabel_generate_resized_image(stored_file $file, $maxwidth, $maxheight) {
+function webpart_generate_resized_image(stored_file $file, $maxwidth, $maxheight) {
     global $CFG;
 
     $fullurl = moodle_url::make_draftfile_url($file->get_itemid(), $file->get_filepath(), $file->get_filename());
@@ -357,7 +357,7 @@ function simplelabel_generate_resized_image(stored_file $file, $maxwidth, $maxhe
  * @return stdClass an object with the different type of areas indicating if they were updated or not
  * @since Moodle 3.2
  */
-function simplelabel_check_updates_since(cm_info $cm, $from, $filter = array()) {
+function webpart_check_updates_since(cm_info $cm, $from, $filter = array()) {
     $updates = course_check_module_updates_since($cm, $from, array(), $filter);
     return $updates;
 }
@@ -373,10 +373,10 @@ function simplelabel_check_updates_since(cm_info $cm, $from, $filter = array()) 
  * @param int $userid User id to use for all capability checks, etc. Set to 0 for current user (default).
  * @return \core_calendar\local\event\entities\action_interface|null
  */
-function mod_simplelabel_core_calendar_provide_event_action(calendar_event $event,
+function mod_webpart_core_calendar_provide_event_action(calendar_event $event,
                                                       \core_calendar\action_factory $factory,
                                                       int $userid = 0) {
-    $cm = get_fast_modinfo($event->courseid, $userid)->instances['simplelabel'][$event->instance];
+    $cm = get_fast_modinfo($event->courseid, $userid)->instances['webpart'][$event->instance];
 
     if (!$cm->uservisible) {
         // The module is not visible to the user for any reason.
@@ -393,7 +393,7 @@ function mod_simplelabel_core_calendar_provide_event_action(calendar_event $even
 
     return $factory->create_instance(
         get_string('view'),
-        new \moodle_url('/mod/simplelabel/view.php', ['id' => $cm->id]),
+        new \moodle_url('/mod/webpart/view.php', ['id' => $cm->id]),
         1,
         true
     );

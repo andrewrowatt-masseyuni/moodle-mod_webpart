@@ -16,17 +16,17 @@
 
 declare(strict_types=1);
 
-namespace mod_simplelabel\completion;
+namespace mod_webpart\completion;
 
 use core_completion\activity_custom_completion;
 
 /**
- * Activity custom completion subclass for the simplelabel.
+ * Activity custom completion subclass for the webpart.
  *
- * Class for defining mod_simplelabel's custom completion rules and fetching the completion statuses
- * of the custom completion rules for a given simplelabel instance and a user.
+ * Class for defining mod_webpart's custom completion rules and fetching the completion statuses
+ * of the custom completion rules for a given webpart instance and a user.
  *
- * @package    mod_simplelabel
+ * @package    mod_webpart
  * @copyright  2021 Huong Nguyen <huongn@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

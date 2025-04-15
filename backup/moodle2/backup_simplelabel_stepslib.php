@@ -16,19 +16,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package mod_simplelabel
+ * @package mod_webpart
  * @copyright  2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /**
- * Define all the backup steps that will be used by the backup_simplelabel_activity_task
+ * Define all the backup steps that will be used by the backup_webpart_activity_task
  */
 
 /**
- * Define the complete simplelabel structure for backup, with file and id annotations
+ * Define the complete webpart structure for backup, with file and id annotations
  */
-class backup_simplelabel_activity_structure_step extends backup_activity_structure_step {
+class backup_webpart_activity_structure_step extends backup_activity_structure_step {
 
     protected function define_structure() {
 
@@ -36,22 +36,22 @@ class backup_simplelabel_activity_structure_step extends backup_activity_structu
         $userinfo = $this->get_setting_value('userinfo');
 
         // Define each element separated
-        $simplelabel = new backup_nested_element('simplelabel', array('id'), array(
+        $webpart = new backup_nested_element('webpart', array('id'), array(
             'name', 'intro', 'introformat', 'timemodified'));
 
         // Build the tree
         // (love this)
 
         // Define sources
-        $simplelabel->set_source_table('simplelabel', array('id' => backup::VAR_ACTIVITYID));
+        $webpart->set_source_table('webpart', array('id' => backup::VAR_ACTIVITYID));
 
         // Define id annotations
         // (none)
 
         // Define file annotations
-        $simplelabel->annotate_files('mod_simplelabel', 'intro', null); // This file area hasn't itemid
+        $webpart->annotate_files('mod_webpart', 'intro', null); // This file area hasn't itemid
 
-        // Return the root element (simplelabel), wrapped into standard activity structure
-        return $this->prepare_activity_structure($simplelabel);
+        // Return the root element (webpart), wrapped into standard activity structure
+        return $this->prepare_activity_structure($webpart);
     }
 }

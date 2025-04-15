@@ -16,9 +16,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines backup_simplelabel_activity_task class
+ * Defines backup_webpart_activity_task class
  *
- * @package     mod_simplelabel
+ * @package     mod_webpart
  * @category    backup
  * @copyright   2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,12 +26,12 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-require_once($CFG->dirroot . '/mod/simplelabel/backup/moodle2/backup_simplelabel_stepslib.php');
+require_once($CFG->dirroot . '/mod/webpart/backup/moodle2/backup_webpart_stepslib.php');
 
 /**
- * Provides the steps to perform one complete backup of the Simple label instance
+ * Provides the steps to perform one complete backup of the Web part instance
  */
-class backup_simplelabel_activity_task extends backup_activity_task {
+class backup_webpart_activity_task extends backup_activity_task {
 
     /**
      * No specific settings for this activity
@@ -40,10 +40,10 @@ class backup_simplelabel_activity_task extends backup_activity_task {
     }
 
     /**
-     * Defines a backup step to store the instance data in the simplelabel.xml file
+     * Defines a backup step to store the instance data in the webpart.xml file
      */
     protected function define_my_steps() {
-        $this->add_step(new backup_simplelabel_activity_structure_step('simplelabel_structure', 'simplelabel.xml'));
+        $this->add_step(new backup_webpart_activity_structure_step('webpart_structure', 'webpart.xml'));
     }
 
     /**

@@ -15,24 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Search area for mod_simplelabel activities.
+ * Search area for mod_webpart activities.
  *
- * @package    mod_simplelabel
+ * @package    mod_webpart
  * @copyright  2015 David Monllao {@link http://www.davidmonllao.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_simplelabel\search;
+namespace mod_webpart\search;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Search area for mod_simplelabel activities.
+ * Search area for mod_webpart activities.
  *
  * Although there is no name field the intro value is stored internally, so no need
  * to overwrite self::get_document.
  *
- * @package    mod_simplelabel
+ * @package    mod_webpart
  * @copyright  2015 David Monllao {@link http://www.davidmonllao.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -48,24 +48,24 @@ class activity extends \core_search\base_activity {
     }
 
     /**
-     * Overwritten as simplelabels are displayed in-course.
+     * Overwritten as webparts are displayed in-course.
      *
      * @param \core_search\document $doc
      * @return \moodle_url
      */
     public function get_doc_url(\core_search\document $doc) {
-        // Get correct URL to section that contains simplelabel, from course format.
+        // Get correct URL to section that contains webpart, from course format.
         $cminfo = $this->get_cm($this->get_module_name(), strval($doc->get('itemid')), $doc->get('courseid'));
         $format = course_get_format($cminfo->get_course());
         $url = $format->get_view_url($cminfo->sectionnum);
 
-        // Add the ID of the simplelabel to the section URL.
+        // Add the ID of the webpart to the section URL.
         $url->set_anchor('module-' . $cminfo->id);
         return $url;
     }
 
     /**
-     * Overwritten as simplelabels are displayed in-course. Link to the course.
+     * Overwritten as webparts are displayed in-course. Link to the course.
      *
      * @param \core_search\document $doc
      * @return \moodle_url

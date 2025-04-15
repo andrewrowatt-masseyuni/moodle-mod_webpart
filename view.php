@@ -16,9 +16,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Simple label module
+ * Web part module
  *
- * @package mod_simplelabel
+ * @package mod_webpart
  * @copyright  2003 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,11 +26,11 @@
 require_once("../../config.php");
 
 $id = optional_param('id',0,PARAM_INT);    // Course Module ID, or
-$l = optional_param('l',0,PARAM_INT);     // Simple label ID
+$l = optional_param('l',0,PARAM_INT);     // Web part ID
 
 if ($id) {
-    $PAGE->set_url('/mod/simplelabel/view.php', array('id' => $id));
-    if (! $cm = get_coursemodule_from_id('simplelabel', $id, 0, true)) {
+    $PAGE->set_url('/mod/webpart/view.php', array('id' => $id));
+    if (! $cm = get_coursemodule_from_id('webpart', $id, 0, true)) {
         throw new \moodle_exception('invalidcoursemodule');
     }
 
@@ -38,19 +38,19 @@ if ($id) {
         throw new \moodle_exception('coursemisconf');
     }
 
-    if (! $simplelabel = $DB->get_record("simplelabel", array("id"=>$cm->instance))) {
+    if (! $webpart = $DB->get_record("webpart", array("id"=>$cm->instance))) {
         throw new \moodle_exception('invalidcoursemodule');
     }
 
 } else {
-    $PAGE->set_url('/mod/simplelabel/view.php', array('l' => $l));
-    if (! $simplelabel = $DB->get_record("simplelabel", array("id"=>$l))) {
+    $PAGE->set_url('/mod/webpart/view.php', array('l' => $l));
+    if (! $webpart = $DB->get_record("webpart", array("id"=>$l))) {
         throw new \moodle_exception('invalidcoursemodule');
     }
-    if (! $course = $DB->get_record("course", array("id"=>$simplelabel->course)) ){
+    if (! $course = $DB->get_record("course", array("id"=>$webpart->course)) ){
         throw new \moodle_exception('coursemisconf');
     }
-    if (! $cm = get_coursemodule_from_instance("simplelabel", $simplelabel->id, $course->id, true)) {
+    if (! $cm = get_coursemodule_from_instance("webpart", $webpart->id, $course->id, true)) {
         throw new \moodle_exception('invalidcoursemodule');
     }
 }

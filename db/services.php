@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Simple label external functions and service definitions.
+ * Web part external functions and service definitions.
  *
- * @package    mod_simplelabel
+ * @package    mod_webpart
  * @category   external
  * @copyright  2017 Juan Leyva <juan@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,13 +28,13 @@ defined('MOODLE_INTERNAL') || die;
 
 $functions = array(
 
-    'mod_simplelabel_get_simplelabels_by_courses' => array(
-        'classname'     => 'mod_simplelabel_external',
-        'methodname'    => 'get_simplelabels_by_courses',
-        'description'   => 'Returns a list of simplelabels in a provided list of courses, if no list is provided all simplelabels that the user
+    'mod_webpart_get_webparts_by_courses' => array(
+        'classname'     => 'mod_webpart_external',
+        'methodname'    => 'get_webparts_by_courses',
+        'description'   => 'Returns a list of webparts in a provided list of courses, if no list is provided all webparts that the user
                             can view will be returned.',
         'type'          => 'read',
-        'capabilities'  => 'mod/simplelabel:view',
+        'capabilities'  => 'mod/webpart:view',
         'services'      => array(MOODLE_OFFICIAL_MOBILE_SERVICE),
     ),
 );

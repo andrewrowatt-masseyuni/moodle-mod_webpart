@@ -19,7 +19,7 @@
  * Provides support for the conversion of moodle1 backup to the moodle2 format
  * Based off of a template @ http://docs.moodle.org/dev/Backup_1.9_conversion_for_developers
  *
- * @package mod_simplelabel
+ * @package mod_webpart
  * @copyright  2011 Aparup Banerjee <aparup@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,9 +27,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Simple label conversion handler
+ * Web part conversion handler
  */
-class moodle1_mod_simplelabel_handler extends moodle1_mod_handler {
+class moodle1_mod_webpart_handler extends moodle1_mod_handler {
 
     /**
      * Declare the paths in moodle.xml we are able to convert
@@ -38,7 +38,7 @@ class moodle1_mod_simplelabel_handler extends moodle1_mod_handler {
      * For each path returned, the corresponding conversion method must be
      * defined.
      *
-     * Note that the path /MOODLE_BACKUP/COURSE/MODULES/MOD/SIMPLELABEL does not
+     * Note that the path /MOODLE_BACKUP/COURSE/MODULES/MOD/WEBPART does not
      * actually exist in the file. The last element with the module name was
      * appended by the moodle1_converter class.
      *
@@ -47,7 +47,7 @@ class moodle1_mod_simplelabel_handler extends moodle1_mod_handler {
     public function get_paths() {
         return array(
             new convert_path(
-                'simplelabel', '/MOODLE_BACKUP/COURSE/MODULES/MOD/SIMPLELABEL',
+                'webpart', '/MOODLE_BACKUP/COURSE/MODULES/MOD/WEBPART',
                 array(
                     'renamefields' => array(
                         'content' => 'intro'
@@ -61,10 +61,10 @@ class moodle1_mod_simplelabel_handler extends moodle1_mod_handler {
     }
 
     /**
-     * This is executed every time we have one /MOODLE_BACKUP/COURSE/MODULES/MOD/SIMPLELABEL
+     * This is executed every time we have one /MOODLE_BACKUP/COURSE/MODULES/MOD/WEBPART
      * data available
      */
-    public function process_simplelabel($data) {
+    public function process_webpart($data) {
         // get the course module id and context id
         $instanceid = $data['id'];
         $cminfo     = $this->get_cminfo($instanceid);
@@ -72,7 +72,7 @@ class moodle1_mod_simplelabel_handler extends moodle1_mod_handler {
         $contextid  = $this->converter->get_contextid(CONTEXT_MODULE, $moduleid);
 
         // get a fresh new file manager for this instance
-        $fileman = $this->converter->get_file_manager($contextid, 'mod_simplelabel');
+        $fileman = $this->converter->get_file_manager($contextid, 'mod_webpart');
 
         // convert course files embedded into the intro
         $fileman->filearea = 'intro';
@@ -80,7 +80,7 @@ class moodle1_mod_simplelabel_handler extends moodle1_mod_handler {
         $data['intro'] = moodle1_converter::migrate_referenced_files($data['intro'], $fileman);
 
         // write inforef.xml
-        $this->open_xml_writer("activities/simplelabel_{$moduleid}/inforef.xml");
+        $this->open_xml_writer("activities/webpart_{$moduleid}/inforef.xml");
         $this->xmlwriter->begin_tag('inforef');
         $this->xmlwriter->begin_tag('fileref');
         foreach ($fileman->get_fileids() as $fileid) {
@@ -90,11 +90,11 @@ class moodle1_mod_simplelabel_handler extends moodle1_mod_handler {
         $this->xmlwriter->end_tag('inforef');
         $this->close_xml_writer();
 
-        // write simplelabel.xml
-        $this->open_xml_writer("activities/simplelabel_{$moduleid}/simplelabel.xml");
+        // write webpart.xml
+        $this->open_xml_writer("activities/webpart_{$moduleid}/webpart.xml");
         $this->xmlwriter->begin_tag('activity', array('id' => $instanceid, 'moduleid' => $moduleid,
-            'modulename' => 'simplelabel', 'contextid' => $contextid));
-        $this->write_xml('simplelabel', $data, array('/simplelabel/id'));
+            'modulename' => 'webpart', 'contextid' => $contextid));
+        $this->write_xml('webpart', $data, array('/webpart/id'));
         $this->xmlwriter->end_tag('activity');
         $this->close_xml_writer();
 

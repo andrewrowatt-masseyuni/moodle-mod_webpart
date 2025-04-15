@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Simple label module version info
+ * Web part module version info
  *
- * @package mod_simplelabel
+ * @package mod_webpart
  * @copyright  2003 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,5 +26,5 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2022112801;       // The current module version (Date: YYYYMMDDXX).
 $plugin->requires  = 2022111800;    // Requires this Moodle version.
-$plugin->component = 'mod_simplelabel'; // Full name of the plugin (used for diagnostics)
+$plugin->component = 'mod_webpart'; // Full name of the plugin (used for diagnostics)
 $plugin->cron      = 0;

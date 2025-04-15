@@ -16,9 +16,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Add simplelabel form
+ * Add webpart form
  *
- * @package mod_simplelabel
+ * @package mod_webpart
  * @copyright  2006 Jamie Pratt, 2025 Andrew Rowatt
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die;
 
 require_once ($CFG->dirroot.'/course/moodleform_mod.php');
 
-class mod_simplelabel_mod_form extends moodleform_mod {
+class mod_webpart_mod_form extends moodleform_mod {
 
     function definition() {
         global $PAGE;
@@ -37,16 +37,16 @@ class mod_simplelabel_mod_form extends moodleform_mod {
         $mform = $this->_form;
 
         $mform->addElement('header', 'generalhdr', get_string('general'));
-        // $this->standard_intro_elements(get_string('simplelabeltext', 'simplelabel'));
+        // $this->standard_intro_elements(get_string('webparttext', 'webpart'));
 
-        $mform->addElement('hidden', 'intro', '<div><h3>This is a simple label</h3></div>');
+        $mform->addElement('hidden', 'intro', '<div><h3>This is a web part</h3></div>');
         $mform->setType('intro', PARAM_RAW);
 
         $mform->addElement('hidden', 'introformat', 1);
         $mform->setType('introformat', PARAM_INT);
        
 
-        // Simple label does not add "Show description" checkbox meaning that 'intro' is always shown on the course page.
+        // Web part does not add "Show description" checkbox meaning that 'intro' is always shown on the course page.
         $mform->addElement('hidden', 'showdescription', 1);
         $mform->setType('showdescription', PARAM_INT);
 
@@ -55,7 +55,7 @@ class mod_simplelabel_mod_form extends moodleform_mod {
             'divider' => 'Divider',
             'spacer' => 'Space'
         ];
-        $select = $mform->addElement('select', 'contenttype', get_string('contenttype','mod_simplelabel'), $contentypeoptions);
+        $select = $mform->addElement('select', 'contenttype', get_string('contenttype','mod_webpart'), $contentypeoptions);
         $select->setSelected('heading');
 
         $spacingoptions = [
@@ -66,7 +66,7 @@ class mod_simplelabel_mod_form extends moodleform_mod {
             '4' => 'Very large spacing (2em)',
             '6' => 'Extra large spacing (3em)'
         ];
-        $select = $mform->addElement('select', 'spacingbefore', get_string('spacingbefore','mod_simplelabel'), $spacingoptions);
+        $select = $mform->addElement('select', 'spacingbefore', get_string('spacingbefore','mod_webpart'), $spacingoptions);
         $select->setSelected('2');
         $mform->hideIf('spacingbefore', 'contenttype', 'in', ['spacer']);
 
@@ -81,7 +81,7 @@ class mod_simplelabel_mod_form extends moodleform_mod {
             'h5' => 'H5',
             'h6' => 'H6'
         ];
-        $select = $mform->addElement('select', 'headinglevel', get_string('headinglevel','mod_simplelabel'), $headingleveloptions);
+        $select = $mform->addElement('select', 'headinglevel', get_string('headinglevel','mod_webpart'), $headingleveloptions);
         $select->setSelected('h3');
         $mform->hideIf('headinglevel', 'contenttype', 'in', ['divider','spacer']);
 
@@ -90,11 +90,11 @@ class mod_simplelabel_mod_form extends moodleform_mod {
             'theme2' => 'Theme 2',
             'theme3' => 'Theme 3'
         ];
-        $select = $mform->addElement('select', 'dividerstyle', get_string('dividerstyle','mod_simplelabel'), $dividerstyleoptions);
+        $select = $mform->addElement('select', 'dividerstyle', get_string('dividerstyle','mod_webpart'), $dividerstyleoptions);
         $select->setSelected('h3');
         $mform->hideIf('dividerstyle', 'contenttype', 'in', ['heading','spacer']);
 
-        $select = $mform->addElement('select', 'spacingafter', get_string('spacingafter','mod_simplelabel'), $spacingoptions);
+        $select = $mform->addElement('select', 'spacingafter', get_string('spacingafter','mod_webpart'), $spacingoptions);
         $select->setSelected('2');
         $mform->hideIf('spacingafter', 'contenttype', 'in', ['spacer']);
 

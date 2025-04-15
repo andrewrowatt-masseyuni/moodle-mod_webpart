@@ -16,7 +16,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package mod_simplelabel
+ * @package mod_webpart
  * @subpackage backup-moodle2
  * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -24,13 +24,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/mod/simplelabel/backup/moodle2/restore_simplelabel_stepslib.php'); // Because it exists (must)
+require_once($CFG->dirroot . '/mod/webpart/backup/moodle2/restore_webpart_stepslib.php'); // Because it exists (must)
 
 /**
- * simplelabel restore task that provides all the settings and steps to perform one
+ * webpart restore task that provides all the settings and steps to perform one
  * complete restore of the activity
  */
-class restore_simplelabel_activity_task extends restore_activity_task {
+class restore_webpart_activity_task extends restore_activity_task {
 
     /**
      * Define (add) particular settings this activity can have
@@ -43,8 +43,8 @@ class restore_simplelabel_activity_task extends restore_activity_task {
      * Define (add) particular steps this activity can have
      */
     protected function define_my_steps() {
-        // simplelabel only has one structure step
-        $this->add_step(new restore_simplelabel_activity_structure_step('simplelabel_structure', 'simplelabel.xml'));
+        // webpart only has one structure step
+        $this->add_step(new restore_webpart_activity_structure_step('webpart_structure', 'webpart.xml'));
     }
 
     /**
@@ -54,7 +54,7 @@ class restore_simplelabel_activity_task extends restore_activity_task {
     static public function define_decode_contents() {
         $contents = array();
 
-        $contents[] = new restore_decode_content('simplelabel', array('intro'), 'simplelabel');
+        $contents[] = new restore_decode_content('webpart', array('intro'), 'webpart');
 
         return $contents;
     }
@@ -70,15 +70,15 @@ class restore_simplelabel_activity_task extends restore_activity_task {
     /**
      * Define the restore log rules that will be applied
      * by the {@link restore_logs_processor} when restoring
-     * simplelabel logs. It must return one array
+     * webpart logs. It must return one array
      * of {@link restore_log_rule} objects
      */
     static public function define_restore_log_rules() {
         $rules = array();
 
-        $rules[] = new restore_log_rule('simplelabel', 'add', 'view.php?id={course_module}', '{simplelabel}');
-        $rules[] = new restore_log_rule('simplelabel', 'update', 'view.php?id={course_module}', '{simplelabel}');
-        $rules[] = new restore_log_rule('simplelabel', 'view', 'view.php?id={course_module}', '{simplelabel}');
+        $rules[] = new restore_log_rule('webpart', 'add', 'view.php?id={course_module}', '{webpart}');
+        $rules[] = new restore_log_rule('webpart', 'update', 'view.php?id={course_module}', '{webpart}');
+        $rules[] = new restore_log_rule('webpart', 'view', 'view.php?id={course_module}', '{webpart}');
 
         return $rules;
     }
@@ -96,7 +96,7 @@ class restore_simplelabel_activity_task extends restore_activity_task {
     static public function define_restore_log_rules_for_course() {
         $rules = array();
 
-        $rules[] = new restore_log_rule('simplelabel', 'view all', 'index.php?id={course}', null);
+        $rules[] = new restore_log_rule('webpart', 'view all', 'index.php?id={course}', null);
 
         return $rules;
     }
