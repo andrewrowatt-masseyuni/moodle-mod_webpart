@@ -19,6 +19,7 @@
 require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
 
 use Behat\Mink\Exception\ExpectationException as ExpectationException;
+use Behat\Mink\Exception\ElementNotFoundException as ElementNotFoundException;
 
 /**
  * Behat steps in plugin mod_webpart
@@ -29,7 +30,7 @@ use Behat\Mink\Exception\ExpectationException as ExpectationException;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class behat_webpart extends behat_base {
-/**
+    /**
      * Checks that the specified webpart is hidden from students. You need to be in the course page.
      *
      * @Then /^"(?P<activity_or_resource_string>(?:[^"]|\\")*)" webpart should be hidden$/
@@ -44,6 +45,20 @@ class behat_webpart extends behat_base {
             // Should be hidden.
             $exception = new ExpectationException('"' . $activityname . '" is not hidden', $this->getSession());
             $this->find('named_partial', array('badge', get_string('hiddenfromstudents')), $exception, $activitynode);
+        }
+    }
+
+    /**
+     * Returns whether the user can edit the course contents or not.
+     *
+     * @return bool
+     */
+    protected function is_course_editor(): bool {
+        try {
+            $this->find('field', get_string('editmode'), false, false, 0);
+            return true;
+        } catch (ElementNotFoundException $e) {
+            return false;
         }
     }
 
