@@ -20,6 +20,7 @@ require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
 
 use Behat\Mink\Exception\ExpectationException as ExpectationException;
 use Behat\Mink\Exception\ElementNotFoundException as ElementNotFoundException;
+use Behat\Mink\Element\NodeElement as NodeElement;
 
 /**
  * Behat steps in plugin mod_webpart
@@ -60,6 +61,21 @@ class behat_webpart extends behat_base {
         } catch (ElementNotFoundException $e) {
             return false;
         }
+    }
+
+    /**
+     * Returns the DOM node of the activity from <li>.
+     *
+     * @throws ElementNotFoundException Thrown by behat_base::find
+     * @param string $activityname The activity name
+     * @return NodeElement
+     */
+    protected function get_activity_node($activityname) {
+
+        $activityname = behat_context_helper::escape($activityname);
+        $xpath = "//li[contains(concat(' ', normalize-space(@class), ' '), ' activity ')][contains(., $activityname)]";
+
+        return $this->find('xpath', $xpath);
     }
 
 }
