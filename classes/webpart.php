@@ -35,7 +35,7 @@ class webpart {
     public static function encode_html(object $data) :string {
         $html = '';
         $content = '';
-        $spacing = "mt-$data->spacingbefore mb-$data->spacingafter";
+        $spacing = "wpmt-$data->spacingbefore wpmb-$data->spacingafter";
 
         switch ($data->contenttype) {
             case 'heading':
@@ -45,7 +45,7 @@ class webpart {
                 $content = "<hr class=\"sl-$data->dividerstyle mt-0 mb-0\"/>";
                 break;
             case 'spacer':
-                $spacing = 'mt-0 mb-' . self::DEFAULT_SPACER_SPACING;
+                $spacing = 'wpmt-0 wpmb-' . self::DEFAULT_SPACER_SPACING;
                 break;
         }
 
@@ -69,7 +69,7 @@ class webpart {
             
             $matches = [];
             /* Get spacing infomation */
-            $result = preg_match('/<div class="mt-(\d) mb-(\d)">/', $html, $matches);
+            $result = preg_match('/<div class="wpmt-(\d) wpmb-(\d)">/', $html, $matches);
             if($result) {
                 $data['spacingbefore'] = $matches[1];
                 $data['spacingafter'] = $matches[2];

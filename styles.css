@@ -1,0 +1,284 @@
+/*
+
+S468093 Dana
+https://stream.massey.ac.nz/course/view.php?id=71903
+289104_2025_S1FS_WLGI
+vs
+https://stream.massey.ac.nz/course/view.php?id=31839
+
+282881
+
+Sample site
+https://stream.massey.ac.nz/course/view.php?id=74918
+LMS0266 289104_2025_S1FS_WLGI
+
+*/
+
+/* LMS0266 start */
+#page-course-view-topics {
+    --default-margin-between-elements: 2em;
+
+    ul:not(:hover) {
+        li.section div.summary {
+            outline: 1px solid salmon;
+
+            &::after {
+                position: absolute;
+                content: 'Bottom margin';
+                font-size: 0.5em;
+                line-height: calc(var(--default-margin-between-elements) * 2);
+                height: calc(var(--default-margin-between-elements) * 2 - 2px);
+                width: calc(var(--default-margin-between-elements) * 8);
+                bottom: calc(var(--default-margin-between-elements) * -2 + 2px);
+                background-color: #eee;
+                right: calc(50% - var(--default-margin-between-elements) * 4);
+                text-align: center;
+                text-transform: uppercase;
+                border-top: 1px solid salmon;
+            }
+
+            &::before {
+                position: absolute;
+                content: 'Section Summary';
+                font-size: 0.6em;
+                top: 0;
+                right: 0;
+                text-align: center;
+                text-transform: uppercase;
+                background-color: salmon;
+                padding: 0.25em 1em;
+            }
+        }
+
+        li.section ul.section > li {
+            &.modtype_label,
+            &.modtype_book,
+            &.modtype_url,
+            &.modtype_resource,
+            &.modtype_webpart {
+                outline: 1px solid aqua!important;
+
+                &::before {
+                    position: absolute;
+                    content: attr(data-type);
+                    font-size: 0.6em;
+                    top: 0;
+                    right: 0;
+                    text-align: center;
+                    text-transform: uppercase;
+                    background-color: #0ff3;
+                    padding: 0.25em 1em;
+                }
+            }
+
+            &::after {
+                position: absolute;
+                content: 'Bottom margin';
+                font-size: 0.5em;
+                line-height: calc(var(--default-margin-between-elements) * 2);
+                height: calc(var(--default-margin-between-elements) * 2 - 2px);
+                width: calc(var(--default-margin-between-elements) * 8);
+                bottom: calc(var(--default-margin-between-elements) * -2 + 2px);
+                background-color: #eee;
+                right: calc(50% - var(--default-margin-between-elements) * 4);
+                text-align: center;
+                text-transform: uppercase;
+                border-top: 1px solid aqua!important;
+            }
+        }
+    }
+
+    ul.sections {
+        li.section {
+            div.summary {
+
+                padding-bottom: 0;
+                margin-bottom: var(--default-margin-between-elements);
+
+                :last-child {
+                    margin-bottom: 0!important;
+                }
+
+                ul, ol {
+                    margin: 0 4% 1em 4%
+                }
+                
+                p+ul, p+ol {
+                    margin-top: -0.5em
+                }
+
+                
+            }
+
+            ul.section {
+                li.snap-asset {
+                    padding: 0;
+
+                    &:not(.modtype_webpart) {
+                        margin: 0 0 var(--default-margin-between-elements) 0;
+                    }
+
+                    div.asset-wrapper {
+                        padding: 0;
+                        margin: 0;
+
+                        div.activityinstance {
+                            padding: 0;
+                            margin: 0;
+
+
+                            div.snap-header-card {
+                                padding-bottom: 0; /* Override Snap theme default */
+
+                                &:has(div.snap-assettype) {
+                                    padding-bottom: 1em; /* Restore Snap theme default */
+                                }
+
+                                /* Book resource has the tag but it is empty */
+                                &:has(div.snap-assettype:empty) {
+                                    display: none;
+                                }
+
+                                .snap-header-card-icons:empty {
+                                    display: none;
+                                }
+                            }
+
+                            div.snap-asset-content {
+                                div.no-overflow {
+                                    /* Workaround for FilterCode side-effect re p > table */
+                                    & > :first-child:empty {
+                                        margin-bottom: 0;
+                                        padding-bottom: 0;
+                                    }
+
+                                    & > :last-child {
+                                        margin-bottom: 0;
+                                        padding-bottom: 0;
+                                    }
+
+                                    /* Workaround FilterCode side-effect p > table */
+                                    table.mut-task + p:empty {
+                                        display: none;
+                                    }
+                                }
+
+                                div.snap-completion-meta:has(a:empty) {
+                                    display: none!important;
+                                }
+                                
+                            }
+
+                        }
+                    }
+
+                    &.snap-activity, &.snap-native-image {
+                        padding: .5em 1em; /* Snap theme */
+                    }
+                }
+
+                li:nth-last-child(2) {
+                    margin-bottom: 0;
+                    &::after {
+                        content: none;
+                    }
+                }
+
+                li.modtype_book, li.snap-native-image {
+                    div.contentafterlink > p.snap-resource-card-fadeout {
+                        display: none;
+                    }
+                }
+
+                li.snap-native {
+                    div.contentafterlink {
+                        padding-bottom: 0;
+                    }
+                }
+
+                /* By default the Snap theme includes snap-assettype content but hides the element, therefore if other elements are empty we can hide snap-header-card */
+
+                li.snap-resource {
+                    div.snap-header-card {
+                        &:has(div.snap-header-card-icons:empty) {
+                            display: none;
+                        }
+                    }
+                }
+
+                
+            }
+        }
+    }
+}
+/* LMS0266 end */
+
+body#page-course-view-topics.snap-resource-card .section li.snap-resource.modtype_webpart {
+    height: auto;
+    width: 100%;
+    float: none;
+    border: none;
+    margin: 0;
+
+    &:has(.wpmt-0) {
+        margin-top: 0;
+    }
+
+    &:has(.wpmt-1) {
+        margin-top: 0.25em;
+    }
+
+    &:has(.wpmt-2) {
+        margin-top: 0.5em;
+    }
+
+    &:has(.wpmt-3) {
+        margin-top: 1em;
+    }
+
+    &:has(.wpmt-4) {
+        margin-top: 1.5em;
+    }
+
+    &:has(.wpmt-5) {
+        margin-top: 3em;
+    }
+
+    &:has(.wpmb-0) {
+        margin-bottom: 0;
+    }
+
+    &:has(.wpmb-1) {
+        margin-bottom: 0.25em;
+    }
+
+    &:has(.wpmb-2) {
+        margin-bottom: 0.5em;
+    }
+
+    &:has(.wpmb-3) {
+        margin-bottom: 1em;
+    }
+
+    &:has(.wpmb-4) {
+        margin-bottom: 1.5em;
+    }
+
+    &:has(.wpmb-5) {
+        margin-bottom: 3em;
+    }
+
+    .snap-header-card-icons {
+        width: 100%;
+    }
+
+    .snap-asset-content {
+        width: 100%;
+
+        .contentwithoutlink {
+            .snap-assettype {
+                display: none;
+            }
+        }
+    }
+}

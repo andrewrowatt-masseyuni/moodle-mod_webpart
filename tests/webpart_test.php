@@ -65,7 +65,7 @@ final class webpart_test extends \advanced_testcase {
                 'spacingbefore' => 2,
                 'spacingafter' => 2,
                 'dividerstyle' => 'theme1',
-                'expected_html' => '<div class="mt-2 mb-2"><h3 class="mb-0" style="overflow: hidden;">Test Heading</h3></div>',
+                'expected_html' => '<div class="wpmt-2 wpmb-2"><h3 class="mb-0" style="overflow: hidden;">Test Heading</h3></div>',
             ],
             'Divider' => [
                 'contenttype' => 'divider',
@@ -74,7 +74,7 @@ final class webpart_test extends \advanced_testcase {
                 'spacingbefore' => 1,
                 'spacingafter' => 1,
                 'dividerstyle' => 'theme1',
-                'expected_html' => '<div class="mt-1 mb-1"><hr class="sl-theme1 mt-0 mb-0"/></div>',
+                'expected_html' => '<div class="wpmt-1 wpmb-1"><hr class="sl-theme1 mt-0 mb-0"/></div>',
             ],
             'Spacer' => [
                 'contenttype' => 'spacer',
@@ -83,7 +83,7 @@ final class webpart_test extends \advanced_testcase {
                 'spacingbefore' => 0,
                 'spacingafter' => 4,
                 'dividerstyle' => '',
-                'expected_html' => '<div class="mt-0 mb-'. webpart::DEFAULT_SPACER_SPACING . '"></div>',
+                'expected_html' => '<div class="wpmt-0 wpmb-'. webpart::DEFAULT_SPACER_SPACING . '"></div>',
             ]
         ];
     }
@@ -119,7 +119,7 @@ final class webpart_test extends \advanced_testcase {
 public function mod_webpart_decode_html_provider(): array {
     return [
         'Heading' => [
-            'html' => '<div class="mt-2 mb-2"><h3 class="mb-0" style="overflow: hidden;">Test Heading</h3></div>',
+            'html' => '<div class="wpmt-2 wpmb-2"><h3 class="mb-0" style="overflow: hidden;">Test Heading</h3></div>',
             'expected_contenttype' => 'heading',
             'expected_heading' => 'Test Heading',
             'expected_headinglevel' => 'h3',
@@ -128,7 +128,7 @@ public function mod_webpart_decode_html_provider(): array {
             'expected_dividerstyle' => 'theme1',
         ],
         'Divider' => [
-            'html' => '<div class="mt-1 mb-1"><hr class="sl-theme1 mt-0 mb-0"/></div>',
+            'html' => '<div class="wpmt-1 wpmb-1"><hr class="sl-theme1 mt-0 mb-0"/></div>',
             'expected_contenttype' => 'divider',
             'expected_heading' => webpart::DEFAULT_HEADING,
             'expected_headinglevel' => webpart::DEFAULT_HEADING_LEVEL,
@@ -137,7 +137,7 @@ public function mod_webpart_decode_html_provider(): array {
             'expected_dividerstyle' => 'theme1',
         ],
         'Spacer' => [
-            'html' => '<div class="mt-0 mb-'. webpart::DEFAULT_SPACER_SPACING . '"></div>',
+            'html' => '<div class="wpmt-0 wpmb-'. webpart::DEFAULT_SPACER_SPACING . '"></div>',
             'expected_contenttype' => 'spacer',
             'expected_heading' => webpart::DEFAULT_HEADING,
             'expected_headinglevel' => webpart::DEFAULT_HEADING_LEVEL,
@@ -146,5 +146,5 @@ public function mod_webpart_decode_html_provider(): array {
             'expected_dividerstyle' => webpart::DEFAULT_DIVIDER_STYLE,
         ]
     ];
-}
+    }
 }
